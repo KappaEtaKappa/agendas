@@ -1,0 +1,57 @@
+{
+	"Reports":[
+		{
+			"reporter":"Secretary",
+			"topic":"Attendance"
+		},
+		{
+			"reporter":"Social Chair",
+			"topic":"Party Report, Tailgate Signup, Banquet"
+		},
+
+
+		{
+			"reporter":"Vice President",
+			"topic":"Exec Board Report"
+		},
+		
+		{
+			"reporter":"Kitchen Steward",
+			"topic":"This week M-Th Lucas and Ahmed F-Su Anton"
+		},
+		{
+			"reporter":"House Steward",
+			"topic":"Housejobs"
+			
+		},
+
+		{
+			"reporter":"Philanthropy Chair",
+			"topic":"Science Olympiad and Science Festival"
+			
+		},
+
+			{
+			"reporter":"Pledge President",
+			"topic":"President"
+			
+		}
+
+	],
+    	"Old":[
+    	"Arcade Machine"
+	
+
+
+    ],
+    
+	"New":[
+	"Futher Network Upgrades",
+	"Frat Meal Next Week",
+	"Study Jam Wednesday",
+	"Road Rally"
+
+	
+
+    ]
+}

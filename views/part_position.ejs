@@ -1,0 +1,7 @@
+<li> <%= position.Position %>
+	<ul>
+		<% position.people.forEach(function(person){ %>
+		<% include part_person %>
+		<% }) %>
+	</ul>
+</li>
