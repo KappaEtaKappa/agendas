@@ -1,0 +1,62 @@
+<% include part_agenda_head %>
+<style>	
+	.snap-drawer-left{
+		background-image:url(/static/img/back.gif)!important;
+        padding-top: 75px;
+	}
+
+
+</style>
+<div id="header">
+    <div id="open-button">
+        <img src="/static/img/crest.png">
+    </div>
+    <h3><%= date %></h3>
+</div>
+<div class="snap-drawers">
+    <div class="snap-drawer snap-drawer-left">
+        <div>
+            <h2>Kappa Eta Kappa</h2>
+            <h3>Positions</h3>
+            <div id="positions">
+                <ul id="position-list">
+                    <% for (var key in Positions){ %>
+                        <% include part_position %>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="content" class="snap-content">
+    <div class=" col-md-12 col-lg-12 col-sm-12 col-xs-12">
+        <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6 ">
+            <h1>Reports</h1>
+            <% Reports.forEach(function(report){ %>
+                <% include part_report %>
+            <% }) %>
+        </div>
+        <div class="col-sm-12 col-xs-12 col-md-6 col-lg-6">
+            <div class="hidden-md hidden-lg line" ></div>
+            <h1>Old Business</h1>
+                <% News.forEach(function(topic){ %>
+                    <% if( topic.old == "FALSE" ){ %>
+                        <% include part_topic %>
+                    <% } %>
+                <% }) %>
+            <div class="clearfix" ></div>
+            <div class="line" ></div>
+            <h1>New Business</h1>
+                <% News.forEach(function(topic){ %>
+                    <% if( topic.old == "TRUE" ){ %>
+                        <% include part_topic %>
+                    <% } %>
+                <% }) %>
+        </div>
+    </div>
+    <div class="footer col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6 col-sm-12 col-xs-12">
+        <img src="/static/img/footer.png">
+    </div>
+</div>
+
+<% include part_foot %>

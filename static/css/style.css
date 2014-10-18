@@ -41,19 +41,56 @@ h2{
 }
 .line{
   height: 2px;
-  margin: 10px;
+  margin: 20px 0px;
+  padding: 0px;
   background-color: #aaa;
 }
 
+#position-list{
+	font-size:18px;
+	color:#fab017;
+	list-style: none;
+	padding-left: 2px;
+}
+
+
+.leader-list{
+	padding-left: 5px;
+}
+.li{
+	color: white;
+	display: block;
+	background: url("/../static/img/nested.png") top 0.5ex left 0 no-repeat;
+	list-style-position: inside;
+	padding-left:18px; 
+}
+.assistant-list{
+	padding-left: 23px;
+}
+
+
+.footer img{
+	width: 100%;
+}
+
+
+
+
+/*
 #positions { color:#fab017; }
 #positions ul { font-size:18px; }
 #positions ul li { }
 #positions ul li ul { list-style-image: url("/static/img/nested.png"); padding:0px 0 5px 18px; margin-top: -5px; font-size:15px; }
 #positions ul li ul li { color:#eee; height:15px; margin-left:10px; }
+*/
 
-.footer img{
-	width: 100%;
-}
+
+
+
+
+
+
+
 #header{
 	position: fixed;
 	top: 0px;

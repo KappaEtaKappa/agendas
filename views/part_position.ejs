@@ -1,7 +1,13 @@
-<li> <%= position.Position %>
-	<ul>
-		<% position.people.forEach(function(person){ %>
-		<% include part_person %>
-		<% }) %>
+<li> 
+	<span><%= key %></span>
+	<ul class="leader-list">
+		<% Positions[key].leader.forEach(function(person){ %>
+			<l1 class="li"><%= person %></l1>
+		<% }); %>
+	</ul>
+	<ul class="assistant-list">
+		<% Positions[key].assistant.forEach(function(person){ %>
+			<l1 class="li"><%= person %></l1>
+		<% }); %>
 	</ul>
 </li>

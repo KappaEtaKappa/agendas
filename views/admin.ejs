@@ -1,0 +1,14 @@
+<% include part_head.ejs %>
+
+	<% Reports.forEach(function(report, index){ %>
+		<form action="/edit?r=<%= index %>" form="POST">
+			<input type="text" value="<%=report.reporter%>" name="reporter">
+			<input type="text" value="<%=report.topic%>" name="topic">
+			<input type="submit" value="Update">
+		</form>
+		<form action="/delete?r=<%= index %>" form="POST">
+			<input type="submit" value="delete">
+		</form>
+	<% }); %>
+
+<% include part_foot.ejs %>
