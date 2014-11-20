@@ -21,7 +21,8 @@ if (!exists) {
 									"topic BLOB NOT NULL, "+
 									"order_num INTEGER NOT NULL, "+
 									"old NOT NULL);");
-		db.run("CREATE TABLE 'positions' (position_name BLOB NOT NULL, "+
+		db.run("CREATE TABLE 'positions' (position_id INTEGER PRIMARY KEY NOT NULL, "+
+										 "position_name BLOB NOT NULL, "+
 										 "member_name BLOB NOT NULL, "+
 										 "order_num INTEGER NOT NULL, "+
 										 "assistant BOOL NOT NULL);");
@@ -32,10 +33,12 @@ if (!exists) {
  }
 
 var utils = require('utils');
+var bodyParser = require('body-parser');
 
 var agendas = express();
 agendas.set('view engine', 'ejs');
 agendas.use("/static", express.static(__dirname + '/static'));
+agendas.use(bodyParser.urlencoded({ extended: false }));
 
 var ejs = require("ejs");
 
@@ -76,10 +79,48 @@ agendas.get('/admin', function(req, res) {
 	utils.getHistory(lockReturn);
 	utils.getPositions(lockReturn);
 });
-
-
+agendas.get('/admin/reports', function(req, res) {
+	utils.getReports(function(member, array){
+		res.render('reports', {"Reports":array});
+	});
+});
 agendas.post('/report/delete', function(req, res){
-	res.redirect("admin");
+	db.run("DELETE FROM reports WHERE report_id="+req.query.report_id);
+	res.redirect("/admin/reports");
+});
+agendas.post('/report/update', function(req, res){ 
+	db.run("UPDATE reports SET reporter='"+req.body.reporter+"', topic='"+req.body.topic+"' WHERE report_id="+req.query.report_id+";");
+	res.redirect("/admin/reports");
+});
+
+agendas.get('/admin/news', function(req, res) {
+	utils.getNews(function(member, array){
+		res.render('news', {"News":array});
+	});
+});
+agendas.post('/news/delete', function(req, res){
+	db.run("DELETE FROM news WHERE news_id="+req.query.news_id);
+	res.redirect("/admin/news");
+});
+agendas.post('/news/update', function(req, res){
+	db.run("UPDATE news SET topic='"+req.body.topic+"', old='"+req.body.old+"' WHERE news_id="+req.query.news_id);
+	res.redirect("/admin/news");
+});
+
+agendas.get('/admin/positions', function(req, res) {
+	db.all("SELECT * from positions ORDER BY order_num" , function(err, _positions){
+		res.render('people', {"Positions":_positions});
+	});
+});
+agendas.post('/positions/delete', function(req, res){
+	var s = "DELETE FROM positions WHERE position_id="+req.query.position_id;
+	console.log(s)
+	db.run(s);
+	res.redirect("/admin/positions");
+});
+agendas.post('/positions/update', function(req, res){
+	db.run("UPDATE positions SET position_name='"+req.body.position_name+"', assistant='"+req.body.assistant+"', member_name='"+req.body.member_name+"' WHERE position_id="+req.query.position_id);
+	res.redirect("/admin/positions");
 });
 
 var save = function(err, report){

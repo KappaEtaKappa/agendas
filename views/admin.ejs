@@ -1,14 +1,9 @@
 <% include part_head.ejs %>
-
-	<% Reports.forEach(function(report, index){ %>
-		<form action="/edit?r=<%= index %>" form="POST">
-			<input type="text" value="<%=report.reporter%>" name="reporter">
-			<input type="text" value="<%=report.topic%>" name="topic">
-			<input type="submit" value="Update">
-		</form>
-		<form action="/delete?r=<%= index %>" form="POST">
-			<input type="submit" value="delete">
-		</form>
-	<% }); %>
-
+	<div class="col-xs-12 col-sm-12">
+		<div class="section col-xs-12 col-sm-12">
+			<a href="/admin/positions">Positions</a>	
+			<a href="/admin/reports">Reports</a>	
+			<a href="/admin/news">News</a>	
+		</div>
+	</div>
 <% include part_foot.ejs %>

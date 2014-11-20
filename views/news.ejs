@@ -1,0 +1,25 @@
+<% include part_head.ejs %>
+	<div class="col-xs-12 col-sm-12">
+		<div class="section col-xs-12 col-sm-12">
+			<% News.forEach(function(news, index){ %>
+				<form class="full-width" action="/news/update?news_id=<%= news.news_id %>" method="POST">
+					<div class="form-group col-sm-6 col-xs-6">
+						<input class="form-control" type="text" value="<%=news.topic%>" name="topic">
+					</div>
+					<div class="form-group col-sm-2 col-xs-2">
+						<input class="" type="radio" name="old" value="TRUE" 
+							<%= news.old == "TRUE" ? 'checked="checked"':'' %> >Old
+						<input class="" type="radio" name="old" value="FALSE"
+							<%= news.old == "FALSE" ? 'checked="checked"':'' %> >New
+					</div>
+					<div class="form-group col-sm-2 col-xs-3">
+						<input class="form-control btn btn-primary" type="submit" value="Update">
+					</div>
+				</form>
+				<form class="form-group col-sm-2 col-xs-2" action="/news/delete?news_id=<%= news.news_id %>" method="POST">
+					<input class="form-control btn btn-danger" type="submit" value="delete">
+				</form>
+			<% }); %>
+		</div>
+	</div>
+<% include part_foot.ejs %>

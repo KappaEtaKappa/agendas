@@ -1,0 +1,31 @@
+<% include part_head.ejs %>
+<div class="clearfix">
+	<div class="col-xs-12 col-sm-12 clearfix">
+		<div class="section col-xs-12 col-sm-12 clearfix">
+			<% for(var positionID in Positions){ %>
+				<form class="full-width clearfix" action="/positions/update?position_id=<%= Positions[positionID].position_id %>" method="POST">
+					<div class="form-group col-sm-3 col-xs-3">
+						<input class="form-control" type="text" value="<%=Positions[positionID].position_name%>" name="position_name">
+					</div>
+					<div class="form-group col-sm-3 col-xs-3">
+						<input class="form-control" type="text" value="<%=Positions[positionID].member_name%>" name="member_name">
+					</div>
+					<div class="form-group col-sm-2 col-xs-2">
+						Assistant
+						<input class="" type="radio" name="assistant" value="TRUE" 
+							<%= Positions[positionID].assistant == "TRUE" ? 'checked="checked"':'' %> >
+						<input class="" type="radio" name="assistant" value="FALSE"
+							<%= Positions[positionID].assistant == "FALSE" ? 'checked="checked"':'' %> >
+					</div>
+					<div class="form-group col-sm-2 col-xs-2">
+						<input class="form-control btn btn-primary" type="submit" value="Update">
+					</div>
+				</form>
+				<form class="form-group col-sm-2 col-xs-2  clearfix" action="/positions/delete?position_id=<%= Positions[positionID].position_id %>" method="POST">
+					<input class="form-control btn btn-danger" type="submit" value="delete">
+				</form>
+			<% }; %>
+		</div>
+	</div>
+</div>
+<% include part_foot.ejs %>

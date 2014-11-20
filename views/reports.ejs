@@ -1,0 +1,22 @@
+<% include part_head.ejs %>
+	<div class="col-xs-12 col-sm-12">
+		<div class="section col-xs-12 col-sm-12">
+			<% Reports.forEach(function(report, index){ %>
+				<form class="full-width" action="/report/update?report_id=<%= report.report_id %>" method="POST">
+					<div class="form-group col-sm-4 col-xs-4">
+						<input class="form-control" type="text" value="<%=report.reporter%>" name="reporter">
+					</div>
+					<div class="form-group col-sm-4 col-xs-4">
+						<input class="form-control" type="text" value="<%=report.topic%>" name="topic">
+					</div>
+					<div class="form-group col-sm-2 col-xs-3">
+						<input class="form-control btn btn-primary" type="submit" value="Update">
+					</div>
+				</form>
+				<form class="form-group col-sm-2 col-xs-2" action="/report/delete?report_id=<%= report.report_id %>" method="POST">
+					<input class="form-control btn btn-danger" type="submit" value="delete">
+				</form>
+			<% }); %>
+		</div>
+	</div>
+<% include part_foot.ejs %>
