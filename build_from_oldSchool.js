@@ -39,7 +39,6 @@ var db = new sqlite3.Database(file);
 db.run("DELETE FROM reports");
 db.run("DELETE FROM news");
 db.run("DELETE FROM positions");
-db.run("DELETE FROM history");
 
 
 var agenda = getAgenda();

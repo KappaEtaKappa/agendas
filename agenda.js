@@ -26,9 +26,6 @@ if (!exists) {
 										 "member_name BLOB NOT NULL, "+
 										 "order_num INTEGER NOT NULL, "+
 										 "assistant VARCHAR(3) NOT NULL);", function(err){console.log(err)});
-		db.run("CREATE TABLE 'history'	(url BLOB NOT NULL, "+
-										"order_num INTEGER NOT NULL, "+
-										"time timestamp default (strftime('%s', 'now')) );", function(err){console.log(err)});
 	});
  }
 
@@ -53,7 +50,7 @@ agendas.get('/', function(req, res) {
 		agendaContent[member] = array;
 		lock++;
 		if(lock >= 0){
-			if(new Date().getDay() == 5)
+			if(new Date().getDay() == 1)
 				res.render('agenda', agendaContent, save);
 
 			res.render('agenda', agendaContent);
@@ -66,10 +63,12 @@ agendas.get('/', function(req, res) {
 	utils.getPositions(lockReturn);
 });
 agendas.get('/admin', function(req, res) {
-	res.render('admin');
+	if(req.cookies.logged_in == "true"){
+		res.redirect("/admin/reports");
+	}else
+		res.render('admin');
 });
 agendas.post('/login', function(req, res) {
-	console.log(req.cookies.logged_in)
 	if(req.body.password == "asdf"){
 		res.cookie("logged_in", "true");
 		res.redirect("/admin/reports");
@@ -77,7 +76,6 @@ agendas.post('/login', function(req, res) {
 		res.redirect("/admin");
 });
 agendas.get('/admin/reports', function(req, res) {
-	console.log(req.cookies.logged_in)
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
 	utils.getReports(function(member, array){
 		res.render('reports', {"Reports":array});
@@ -169,13 +167,13 @@ agendas.post('/positions/add', function(req, res){
 		db.run("INSERT INTO positions (position_name,assistant,member_name,order_num)"+
 			"VALUES ('"+req.body.position_name+"','"+req.body.assistant+"','"+req.body.member_name+"','"+(positions.order_num+1)+"');");
 		res.redirect("/admin/positions");
-	})
+	});
 });
 
 var save = function(err, report){
 	var date = new Date();
 	var filename = date.getFullYear() +"_"+ (date.getMonth()+1) +"_"+ (date.getDate()) + ".html"
-	fs.writeFile(__dirname + '/static/history/'+filename, report, function(err) {
+	fs.writeFile(__dirname + '/public/history/'+filename, report, function(err) {
 		if(err) console.log(err);
     });
 }

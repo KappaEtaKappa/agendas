@@ -4,7 +4,6 @@ $(document).ready(function(){
 	  	element: document.getElementById('content')
 	});
 	snapper.settings({
-		disable: 'right'
 	});
 	var toggle = false;
 	$('#open-button').click(function(){
@@ -15,8 +14,3 @@ $(document).ready(function(){
 		toggle = !toggle;
 	});
 })
-
-window.goManual = function(){
-	alert("maanu");
-	$(".order_num_input").toggle();
-}

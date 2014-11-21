@@ -33,11 +33,12 @@ h2{
 	margin-bottom: 0;
 	float: right;
 }
-.snap-drawer-left{
+.snap-drawer-left, .snap-drawer-right{
 	padding-left: 7px;
+	padding-right: 7px;
 	color:#eee;
 	background-color: #6a4388;
-	background-image:url(/static/img/back.gif);
+	background-image:url(/img/back.gif);
 }
 .line{
   height: 2px;
@@ -52,6 +53,17 @@ h2{
 	list-style: none;
 	padding-left: 2px;
 }
+#history-list{
+	font-size:2em;
+	color:#fab017;
+	list-style: none;
+	padding-right: 2px;
+	float: right;
+}
+.history-li{
+	float:right;
+	color:#fab017;
+}
 
 
 .leader-list{
@@ -60,7 +72,7 @@ h2{
 .li{
 	color: white;
 	display: block;
-	background: url("/../static/img/nested.png") top 0.5ex left 0 no-repeat;
+	background: url("/img/nested.png") top 0.5ex left 0 no-repeat;
 	list-style-position: inside;
 	padding-left:18px; 
 }
@@ -71,6 +83,8 @@ h2{
 
 .footer img{
 	width: 100%;
+	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 

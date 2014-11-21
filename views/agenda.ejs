@@ -1,7 +1,7 @@
 <% include part_agenda_head %>
 <style>	
 	.snap-drawer-left{
-		background-image:url(/static/img/back.gif)!important;
+		background-image:url(/img/back.gif)!important;
         padding-top: 30px;
 	}
 
@@ -9,7 +9,7 @@
 </style>
 <div id="header">
     <div id="open-button">
-        <img src="/static/img/crest.png">
+        <img src="/img/crest.png">
     </div>
     <h3><%= date %></h3>
 </div>
@@ -22,6 +22,20 @@
                     <% for (var key in Positions){ %>
                         <% include part_position %>
                     <% } %>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="snap-drawer snap-drawer-right">
+        <div>
+            <h3>History</h3>
+            <div id="positions">
+                <ul id="history-list">
+                    <% History.forEach(function(meeting){ %>
+                        <li class="history-li">
+                            <a href="<%= meeting.href %>"><%= meeting.name %></a>
+                        </li>
+                    <% }); %>
                 </ul>
             </div>
         </div>
@@ -39,7 +53,7 @@
             <div class="hidden-md hidden-lg line" ></div>
             <h1>Old Business</h1>
                 <% News.forEach(function(topic){ %>
-                    <% if( topic.old == "FALSE" ){ %>
+                    <% if( topic.old == "off" ){ %>
                         <% include part_topic %>
                     <% } %>
                 <% }) %>
@@ -47,14 +61,14 @@
             <div class="line" ></div>
             <h1>New Business</h1>
                 <% News.forEach(function(topic){ %>
-                    <% if( topic.old == "TRUE" ){ %>
+                    <% if( topic.old == "on" ){ %>
                         <% include part_topic %>
                     <% } %>
                 <% }) %>
         </div>
     </div>
     <div class="footer col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6 col-sm-12 col-xs-12">
-        <img src="/static/img/footer.png">
+        <img src="/img/footer.png">
     </div>
 </div>
 
