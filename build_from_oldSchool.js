@@ -52,13 +52,13 @@ db.serialize(function() {
 	};
 	for (var i = 0; i < agenda.Old.length; i++) {
 		var query = "INSERT INTO news (topic,order_num,old)"
-						+ "VALUES ('"+agenda.Old[i]+"', "+i+", 'TRUE');";
+						+ "VALUES ('"+agenda.Old[i]+"', "+i+", 'on');";
 		console.log(query);
 		db.run(query, function(err){if(err) console.log(err);});
 	};
 	for (var i = 0; i < agenda.New.length; i++) {
 		var query = "INSERT INTO news (topic,order_num,old)"
-						+ "VALUES ('"+agenda.New[i]+"', "+i+", 'FALSE');";
+						+ "VALUES ('"+agenda.New[i]+"', "+i+", 'off');";
 		console.log(query);
 		db.run(query, function(err){if(err) console.log(err);});
 	};
@@ -72,10 +72,10 @@ db.serialize(function() {
 		var position = positions[i].Position
 		for (var j = 0; j < positions[i].people.length; j++) {
 			var personName = positions[i].people[j];
-			var assistant = "FALSE";
+			var assistant = "off";
 			if(personName.indexOf(")") > -1){
 				personName = personName.replace(")", "").replace("(", "");
-				assistant = "TRUE";
+				assistant = "on";
 			}
 
 			var query = "INSERT INTO positions (position_name, member_name, order_num,assistant)"

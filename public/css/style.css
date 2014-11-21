@@ -118,3 +118,8 @@ h2{
 .section{
 	background:white;
 }
+.input-group > input{
+	display: table-cell;
+	width: initial;
+	float: left;
+}

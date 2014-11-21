@@ -1,31 +1,107 @@
-<% include part_head.ejs %>
-<div class="clearfix">
-	<div class="col-xs-12 col-sm-12 clearfix">
-		<div class="section col-xs-12 col-sm-12 clearfix">
-			<% for(var positionID in Positions){ %>
-				<form class="full-width clearfix" action="/positions/update?position_id=<%= Positions[positionID].position_id %>" method="POST">
-					<div class="form-group col-sm-3 col-xs-3">
-						<input class="form-control" type="text" value="<%=Positions[positionID].position_name%>" name="position_name">
-					</div>
-					<div class="form-group col-sm-3 col-xs-3">
-						<input class="form-control" type="text" value="<%=Positions[positionID].member_name%>" name="member_name">
-					</div>
-					<div class="form-group col-sm-2 col-xs-2">
-						Assistant
-						<input class="" type="radio" name="assistant" value="TRUE" 
-							<%= Positions[positionID].assistant == "TRUE" ? 'checked="checked"':'' %> >
-						<input class="" type="radio" name="assistant" value="FALSE"
-							<%= Positions[positionID].assistant == "FALSE" ? 'checked="checked"':'' %> >
-					</div>
-					<div class="form-group col-sm-2 col-xs-2">
-						<input class="form-control btn btn-primary" type="submit" value="Update">
-					</div>
-				</form>
-				<form class="form-group col-sm-2 col-xs-2  clearfix" action="/positions/delete?position_id=<%= Positions[positionID].position_id %>" method="POST">
-					<input class="form-control btn btn-danger" type="submit" value="delete">
-				</form>
-			<% }; %>
-		</div>
-	</div>
-</div>
-<% include part_foot.ejs %>
+<% include part_admin_head.ejs %>
+	<% for(var positionID in Positions){ %>
+		<form 	class="position col-xs-12 col-sm-12 btn-group" 
+				data-position-id="<%= Positions[positionID].position_id %>">
+			<div class="input-group">
+				<span class="input-group-addon">
+					<input type="checkbox" title="Assistant?" name="assistant"
+						<%= Positions[positionID].assistant == "on" ? 'checked="checked"':'' %>>
+				</span>
+				<input class="form-control" type="text" placeholder="Position"
+						value="<%=Positions[positionID].position_name%>" name="position_name">
+				<input class="form-control" type="text" placeholder="Member"
+						value="<%=Positions[positionID].member_name%>" name="member_name">
+				<input type="text" style="display:none;"
+						value="<%=Positions[positionID].order_num%>" name="order_num">
+				<span class="ctrl-up input-group-addon"><i class="glyphicon glyphicon-arrow-up"></i></span>
+				<span class="ctrl-down input-group-addon"><i class="glyphicon glyphicon-arrow-down"></i></span>
+				<span class="ctrl-save input-group-addon"><i class="glyphicon glyphicon-floppy-disk"></i></span>
+				<span class="ctrl-delete input-group-addon"><i class="glyphicon glyphicon-remove"></i></span>
+			</div>
+		</form>
+	<% }; %>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("form").on("click", ".ctrl-up", function(){
+				var form = $(this).closest(".position");
+				var position_id = form.attr("data-position-id");
+				var prevForm = form.prev();
+				var prevPosition_id = prevForm.attr("data-position-id");
+				
+
+				var html = form.html();
+				form.html(prevForm.html());
+				form.attr("data-position-id", prevPosition_id);
+				prevForm.html(html);
+				prevForm.attr("data-position-id", position_id);
+
+
+				var order_num = form.find("input[name='order_num']").val();
+				var prev_order_num = prevForm.find("input[name='order_num']").val();
+				form.find("input[name='order_num']").val(prev_order_num);
+				prevForm.find("input[name='order_num']").val(order_num);
+
+
+				$.ajax({
+					url:"/positions/update?position_id="+prevPosition_id,
+					type:"POST",
+					data:form.serialize()
+				});
+				$.ajax({
+					url:"/positions/update?position_id="+position_id,
+					type:"POST",
+					data:prevForm.serialize()
+				});
+			});
+			$("form").on("click", ".ctrl-down", function(){
+				var form = $(this).closest(".position");
+				var position_id = form.attr("data-position-id");
+				var nextForm = form.next();
+				var nextPosition_id = nextForm.attr("data-position-id");
+				
+
+				var html = form.html();
+				form.html(nextForm.html());
+				form.attr("data-position-id", nextPosition_id);
+				nextForm.html(html);
+				nextForm.attr("data-position-id", position_id);
+
+
+				var order_num = form.find("input[name='order_num']").val();
+				var next_order_num = nextForm.find("input[name='order_num']").val();
+				form.find("input[name='order_num']").val(next_order_num);
+				nextForm.find("input[name='order_num']").val(order_num);
+
+
+				$.ajax({
+					url:"/positions/update?position_id="+nextPosition_id,
+					type:"POST",
+					data:form.serialize()
+				});
+				$.ajax({
+					url:"/positions/update?position_id="+position_id,
+					type:"POST",
+					data:nextForm.serialize()
+				});
+			});
+			$("form").on("click", ".ctrl-save", function(){
+				var form = $(this).closest(".position");
+				var position_id = form.attr("data-position-id");
+				$.ajax({
+					url:"/positions/update?position_id="+position_id,
+					type:"POST",
+					data:form.serialize()
+				});
+			});
+			$("form").on("click", ".ctrl-delete", function(){
+				var form = $(this).closest(".position");
+				var position_id = form.attr("data-position-id");
+				$.ajax({
+					url:"/positions/delete?position_id="+position_id,
+					type:"POST"
+				});
+				form.remove();
+			});
+		});
+	</script>
+<% include part_admin_foot.ejs %>

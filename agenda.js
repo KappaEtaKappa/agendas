@@ -16,19 +16,19 @@ if (!exists) {
 		db.run("CREATE TABLE 'reports'	(report_id INTEGER PRIMARY KEY NOT NULL, "+
 										"reporter BLOB NOT NULL, "+
 										"order_num INTEGER NOT NULL, "+
-										"topic BLOB NOT NULL);");
+										"topic BLOB NOT NULL);", function(err){console.log(err)});
 		db.run("CREATE TABLE 'news'	(news_id INTEGER PRIMARY KEY NOT NULL, "+
 									"topic BLOB NOT NULL, "+
 									"order_num INTEGER NOT NULL, "+
-									"old NOT NULL);");
+									"old VARCHAR(3) NOT NULL);", function(err){console.log(err)});
 		db.run("CREATE TABLE 'positions' (position_id INTEGER PRIMARY KEY NOT NULL, "+
 										 "position_name BLOB NOT NULL, "+
 										 "member_name BLOB NOT NULL, "+
 										 "order_num INTEGER NOT NULL, "+
-										 "assistant BOOL NOT NULL);");
+										 "assistant VARCHAR(3) NOT NULL);", function(err){console.log(err)});
 		db.run("CREATE TABLE 'history'	(url BLOB NOT NULL, "+
 										"order_num INTEGER NOT NULL, "+
-										"time timestamp default (strftime('%s', 'now')) );");
+										"time timestamp default (strftime('%s', 'now')) );", function(err){console.log(err)});
 	});
  }
 
@@ -37,7 +37,7 @@ var bodyParser = require('body-parser');
 
 var agendas = express();
 agendas.set('view engine', 'ejs');
-agendas.use("/static", express.static(__dirname + '/static'));
+agendas.use(express.static(__dirname + '/public'));
 agendas.use(bodyParser.urlencoded({ extended: false }));
 
 var ejs = require("ejs");
@@ -108,7 +108,7 @@ agendas.post('/news/update', function(req, res){
 });
 
 agendas.get('/admin/positions', function(req, res) {
-	db.all("SELECT * from positions ORDER BY order_num" , function(err, _positions){
+	db.all("SELECT * from positions ORDER BY order_num ASC" , function(err, _positions){
 		res.render('people', {"Positions":_positions});
 	});
 });
@@ -119,7 +119,12 @@ agendas.post('/positions/delete', function(req, res){
 	res.redirect("/admin/positions");
 });
 agendas.post('/positions/update', function(req, res){
-	db.run("UPDATE positions SET position_name='"+req.body.position_name+"', assistant='"+req.body.assistant+"', member_name='"+req.body.member_name+"' WHERE position_id="+req.query.position_id);
+	console.log(req.body)
+	db.run("UPDATE positions SET position_name='"+req.body.position_name+"',"
+		+" assistant='"+req.body.assistant+"',"
+		+" member_name='"+req.body.member_name+"',"
+		+" order_num='"+req.body.order_num+"'"
+		+" WHERE position_id="+req.query.position_id);
 	res.redirect("/admin/positions");
 });
 
