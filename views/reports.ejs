@@ -1,4 +1,15 @@
 <% include part_admin_head.ejs %>
+	<form 	class="entry col-xs-12 col-sm-12 btn-group" action="/report/add" method="POST">
+		<div class="input-group">
+				<input class="form-control" type="text" placeholder="Reporter" value="" name="reporter">
+				<input class="form-control col-md-5 col-xs-5" type="text" placeholder="Topic"	value="" name="topic">
+			<div class="input-group-addon">
+				<button type="submit" class="no-btn">
+					<i class="glyphicon glyphicon-floppy-disk"></i>
+				</button>
+			</div>
+		</div>
+	</form>
 	<% Reports.forEach(function(report, index){ %>
 		<form 	class="entry col-xs-12 col-sm-12 btn-group" 
 				data-id="<%= report.report_id %>">

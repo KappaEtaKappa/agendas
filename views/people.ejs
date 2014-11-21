@@ -1,4 +1,18 @@
 <% include part_admin_head.ejs %>
+	<form 	class="entry col-xs-12 col-sm-12 btn-group" action="/positions/add" method="POST">
+		<div class="input-group">
+			<span class="input-group-addon">
+				<input type="checkbox" title="Assistant?" name="assistant">
+			</span>
+			<input class="form-control col-md-5 col-xs-5" type="text" placeholder="Position" value="" name="position_name">
+			<input class="form-control col-md-5 col-xs-5" type="text" placeholder="Member" value="" name="member_name">
+			<div class="input-group-addon">
+				<button type="submit" class="no-btn">
+					<i class="glyphicon glyphicon-floppy-disk"></i>
+				</button>
+			</div>
+		</div>
+	</form>
 	<% for(var positionID in Positions){ %>
 		<form 	class="position col-xs-12 col-sm-12 btn-group" 
 				data-position-id="<%= Positions[positionID].position_id %>">

@@ -123,3 +123,9 @@ h2{
 	width: initial;
 	float: left;
 }
+
+.no-btn{
+	background: none;
+	border:0px;
+	color: #555;
+}

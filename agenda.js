@@ -13,15 +13,15 @@ global.db = new sqlite3.Database(file);
 if (!exists) {
 	console.log("creating new db");
 	db.serialize(function () {
-		db.run("CREATE TABLE 'reports'	(report_id INTEGER PRIMARY KEY NOT NULL, "+
+		db.run("CREATE TABLE 'reports'	(report_id INTEGER PRIMARY KEY, "+
 										"reporter BLOB NOT NULL, "+
 										"order_num INTEGER NOT NULL, "+
 										"topic BLOB NOT NULL);", function(err){console.log(err)});
-		db.run("CREATE TABLE 'news'	(news_id INTEGER PRIMARY KEY NOT NULL, "+
+		db.run("CREATE TABLE 'news'	(news_id INTEGER PRIMARY KEY, "+
 									"topic BLOB NOT NULL, "+
 									"order_num INTEGER NOT NULL, "+
 									"old VARCHAR(3) NOT NULL);", function(err){console.log(err)});
-		db.run("CREATE TABLE 'positions' (position_id INTEGER PRIMARY KEY NOT NULL, "+
+		db.run("CREATE TABLE 'positions' (position_id INTEGER PRIMARY KEY, "+
 										 "position_name BLOB NOT NULL, "+
 										 "member_name BLOB NOT NULL, "+
 										 "order_num INTEGER NOT NULL, "+
@@ -95,6 +95,13 @@ agendas.post('/report/update', function(req, res){
 		+" WHERE report_id="+req.query.report_id+";", function(err){console.log(err)});
 	res.redirect("/admin/reports");
 });
+agendas.post('/report/add', function(req, res){
+	db.get("SELECT * FROM reports ORDER BY order_num DESC LIMIT 1", function(err, report){
+		db.run("INSERT INTO reports (topic,reporter,order_num)"+
+			"VALUES ('"+req.body.topic+"','"+req.body.reporter+"','"+(report.order_num+1)+"');");
+		res.redirect("/admin/reports");
+	})
+});
 
 agendas.get('/admin/news', function(req, res) {
 	utils.getNews(function(member, array){
@@ -111,6 +118,13 @@ agendas.post('/news/update', function(req, res){
 		+" order_num='"+req.body.order_num+"'"
 		+" WHERE news_id="+req.query.news_id);
 	res.redirect("/admin/news");
+});
+agendas.post('/news/add', function(req, res){
+	db.get("SELECT * FROM news ORDER BY order_num DESC LIMIT 1", function(err, news){
+		db.run("INSERT INTO news (topic,old,order_num)"+
+			"VALUES ('"+req.body.topic+"','"+req.body.old+"','"+(news.order_num+1)+"');");
+		res.redirect("/admin/news");
+	})
 });
 
 agendas.get('/admin/positions', function(req, res) {
@@ -129,6 +143,13 @@ agendas.post('/positions/update', function(req, res){
 		+" order_num='"+req.body.order_num+"'"
 		+" WHERE position_id="+req.query.position_id);
 	res.redirect("/admin/positions");
+});
+agendas.post('/positions/add', function(req, res){
+	db.get("SELECT * FROM positions ORDER BY order_num DESC LIMIT 1", function(err, positions){
+		db.run("INSERT INTO positions (position_name,assistant,member_name,order_num)"+
+			"VALUES ('"+req.body.position_name+"','"+req.body.assistant+"','"+req.body.member_name+"','"+(positions.order_num+1)+"');");
+		res.redirect("/admin/positions");
+	})
 });
 
 var save = function(err, report){
