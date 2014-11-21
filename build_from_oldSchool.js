@@ -30,6 +30,7 @@ var sqlite3 = require("sqlite3").verbose();
 var file = __dirname + "/db.sqlite";
 if (!fs.existsSync(file)) {
 	console.log("DB not created");
+	return;
 }
 
 var db = new sqlite3.Database(file);

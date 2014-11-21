@@ -89,7 +89,10 @@ agendas.post('/report/delete', function(req, res){
 	res.redirect("/admin/reports");
 });
 agendas.post('/report/update', function(req, res){ 
-	db.run("UPDATE reports SET reporter='"+req.body.reporter+"', topic='"+req.body.topic+"' WHERE report_id="+req.query.report_id+";");
+	db.run("UPDATE reports SET reporter='"+req.body.reporter+"',"
+		+" topic='"+req.body.topic+"',"
+		+" order_num='"+req.body.order_num+"'"
+		+" WHERE report_id="+req.query.report_id+";", function(err){console.log(err)});
 	res.redirect("/admin/reports");
 });
 
@@ -103,7 +106,10 @@ agendas.post('/news/delete', function(req, res){
 	res.redirect("/admin/news");
 });
 agendas.post('/news/update', function(req, res){
-	db.run("UPDATE news SET topic='"+req.body.topic+"', old='"+req.body.old+"' WHERE news_id="+req.query.news_id);
+	db.run("UPDATE news SET topic='"+req.body.topic+"',"
+		+" old='"+req.body.old+"',"
+		+" order_num='"+req.body.order_num+"'"
+		+" WHERE news_id="+req.query.news_id);
 	res.redirect("/admin/news");
 });
 
@@ -113,13 +119,10 @@ agendas.get('/admin/positions', function(req, res) {
 	});
 });
 agendas.post('/positions/delete', function(req, res){
-	var s = "DELETE FROM positions WHERE position_id="+req.query.position_id;
-	console.log(s)
-	db.run(s);
+	db.run("DELETE FROM positions WHERE position_id="+req.query.position_id);
 	res.redirect("/admin/positions");
 });
 agendas.post('/positions/update', function(req, res){
-	console.log(req.body)
 	db.run("UPDATE positions SET position_name='"+req.body.position_name+"',"
 		+" assistant='"+req.body.assistant+"',"
 		+" member_name='"+req.body.member_name+"',"

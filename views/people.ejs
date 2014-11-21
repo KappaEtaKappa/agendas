@@ -3,6 +3,8 @@
 		<form 	class="position col-xs-12 col-sm-12 btn-group" 
 				data-position-id="<%= Positions[positionID].position_id %>">
 			<div class="input-group">
+				<span class="ctrl-up input-group-addon"><i class="glyphicon glyphicon-arrow-up"></i></span>
+				<span class="ctrl-down input-group-addon"><i class="glyphicon glyphicon-arrow-down"></i></span>
 				<span class="input-group-addon">
 					<input type="checkbox" title="Assistant?" name="assistant"
 						<%= Positions[positionID].assistant == "on" ? 'checked="checked"':'' %>>
@@ -13,8 +15,6 @@
 						value="<%=Positions[positionID].member_name%>" name="member_name">
 				<input type="text" style="display:none;"
 						value="<%=Positions[positionID].order_num%>" name="order_num">
-				<span class="ctrl-up input-group-addon"><i class="glyphicon glyphicon-arrow-up"></i></span>
-				<span class="ctrl-down input-group-addon"><i class="glyphicon glyphicon-arrow-down"></i></span>
 				<span class="ctrl-save input-group-addon"><i class="glyphicon glyphicon-floppy-disk"></i></span>
 				<span class="ctrl-delete input-group-addon"><i class="glyphicon glyphicon-remove"></i></span>
 			</div>

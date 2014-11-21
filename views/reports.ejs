@@ -1,22 +1,103 @@
-<% include part_head.ejs %>
-	<div class="col-xs-12 col-sm-12">
-		<div class="section col-xs-12 col-sm-12">
-			<% Reports.forEach(function(report, index){ %>
-				<form class="full-width" action="/report/update?report_id=<%= report.report_id %>" method="POST">
-					<div class="form-group col-sm-4 col-xs-4">
-						<input class="form-control" type="text" value="<%=report.reporter%>" name="reporter">
-					</div>
-					<div class="form-group col-sm-4 col-xs-4">
-						<input class="form-control" type="text" value="<%=report.topic%>" name="topic">
-					</div>
-					<div class="form-group col-sm-2 col-xs-3">
-						<input class="form-control btn btn-primary" type="submit" value="Update">
-					</div>
-				</form>
-				<form class="form-group col-sm-2 col-xs-2" action="/report/delete?report_id=<%= report.report_id %>" method="POST">
-					<input class="form-control btn btn-danger" type="submit" value="delete">
-				</form>
-			<% }); %>
-		</div>
-	</div>
-<% include part_foot.ejs %>
+<% include part_admin_head.ejs %>
+	<% Reports.forEach(function(report, index){ %>
+		<form 	class="entry col-xs-12 col-sm-12 btn-group" 
+				data-id="<%= report.report_id %>">
+			<div class="input-group">
+				<span class="ctrl-up input-group-addon"><i class="glyphicon glyphicon-arrow-up"></i></span>
+				<span class="ctrl-down input-group-addon"><i class="glyphicon glyphicon-arrow-down"></i></span>
+				<input class="form-control" type="text" placeholder="Reporter"
+						value="<%=report.reporter%>" name="reporter">
+				<input class="form-control" type="text" placeholder="Topic"
+						value="<%=report.topic%>" name="topic">
+				<input type="text" style="display:none;"
+						value="<%=report.order_num%>" name="order_num">
+				<span class="ctrl-save input-group-addon"><i class="glyphicon glyphicon-floppy-disk"></i></span>
+				<span class="ctrl-delete input-group-addon"><i class="glyphicon glyphicon-remove"></i></span>
+			</div>
+		</form>
+	<% }); %>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("form").on("click", ".ctrl-up", function(){
+				var form = $(this).closest(".entry");
+				var entry_id = form.attr("data-id");
+				var prevForm = form.prev();
+				var preventry_id = prevForm.attr("data-id");
+				
+
+				var html = form.html();
+				form.html(prevForm.html());
+				form.attr("data-id", preventry_id);
+				prevForm.html(html);
+				prevForm.attr("data-id", entry_id);
+
+
+				var order_num = form.find("input[name='order_num']").val();
+				var prev_order_num = prevForm.find("input[name='order_num']").val();
+				form.find("input[name='order_num']").val(prev_order_num);
+				prevForm.find("input[name='order_num']").val(order_num);
+
+
+				$.ajax({
+					url:"/report/update?report_id="+preventry_id,
+					type:"POST",
+					data:form.serialize()
+				});
+				$.ajax({
+					url:"/report/update?report_id="+entry_id,
+					type:"POST",
+					data:prevForm.serialize()
+				});
+			});
+			$("form").on("click", ".ctrl-down", function(){
+				var form = $(this).closest(".entry");
+				var entry_id = form.attr("data-id");
+				var nextForm = form.next();
+				var nextentry_id = nextForm.attr("data-id");
+				
+
+				var html = form.html();
+				form.html(nextForm.html());
+				form.attr("data-id", nextentry_id);
+				nextForm.html(html);
+				nextForm.attr("data-id", entry_id);
+
+
+				var order_num = form.find("input[name='order_num']").val();
+				var next_order_num = nextForm.find("input[name='order_num']").val();
+				form.find("input[name='order_num']").val(next_order_num);
+				nextForm.find("input[name='order_num']").val(order_num);
+
+
+				$.ajax({
+					url:"/report/update?report_id="+nextentry_id,
+					type:"POST",
+					data:form.serialize()
+				});
+				$.ajax({
+					url:"/report/update?report_id="+entry_id,
+					type:"POST",
+					data:nextForm.serialize()
+				});
+			});
+			$("form").on("click", ".ctrl-save", function(){
+				var form = $(this).closest(".entry");
+				var entry_id = form.attr("data-id");
+				$.ajax({
+					url:"/report/update?report_id="+entry_id,
+					type:"POST",
+					data:form.serialize()
+				});
+			});
+			$("form").on("click", ".ctrl-delete", function(){
+				var form = $(this).closest(".entry");
+				var entry_id = form.attr("data-id");
+				$.ajax({
+					url:"/report/delete?report_id="+entry_id,
+					type:"POST"
+				});
+				form.remove();
+			});
+		});
+	</script>
+<% include part_admin_foot.ejs %>
