@@ -1,9 +1,23 @@
 <% include part_head.ejs %>
-	<div class="col-xs-12 col-sm-12">
-		<div class="section col-xs-12 col-sm-12">
-			<a href="/admin/positions">Positions</a>	
-			<a href="/admin/reports">Reports</a>	
-			<a href="/admin/news">News</a>	
+	<form class="col-md-offset-4 col-md-4 col-sm-offset-3 col-sm-6 col-xs-12 admin"
+			action="/login" method="POST">
+		<div>
+			<label for="password">Login</label>
+			<input name="password" id="password" class="col-sm-12 col-xs-12 form-control" type="password" placeholder="Password">
+			<input type="submit" class="pull-right btn btn-primary">		
 		</div>
-	</div>
+	</form>
+	<style type="text/css">
+		.admin{
+			height: 100vh;
+			display: table;
+		}
+		.admin > div{
+			display: table-cell;
+			vertical-align: middle;
+		}
+		input{
+			margin-bottom: 5px;
+		}
+	</style>
 <% include part_foot.ejs %>

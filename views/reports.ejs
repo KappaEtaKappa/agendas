@@ -1,11 +1,11 @@
 <% include part_admin_head.ejs %>
 	<form 	class="entry col-xs-12 col-sm-12 btn-group" action="/report/add" method="POST">
 		<div class="input-group">
-				<input class="form-control" type="text" placeholder="Reporter" value="" name="reporter">
+				<input class="form-control" style="border-radius:0px;" type="text" placeholder="Reporter" value="" name="reporter">
 				<input class="form-control col-md-5 col-xs-5" type="text" placeholder="Topic"	value="" name="topic">
 			<div class="input-group-addon">
 				<button type="submit" class="no-btn">
-					<i class="glyphicon glyphicon-floppy-disk"></i>
+					<i class="glyphicon glyphicon-plus"></i>
 				</button>
 			</div>
 		</div>
@@ -20,7 +20,7 @@
 						value="<%=report.reporter%>" name="reporter">
 				<input class="form-control" type="text" placeholder="Topic"
 						value="<%=report.topic%>" name="topic">
-				<input type="text" style="display:none;"
+				<input type="text" style="display:none;" class="form-control order_num_input"
 						value="<%=report.order_num%>" name="order_num">
 				<span class="ctrl-save input-group-addon"><i class="glyphicon glyphicon-floppy-disk"></i></span>
 				<span class="ctrl-delete input-group-addon"><i class="glyphicon glyphicon-remove"></i></span>

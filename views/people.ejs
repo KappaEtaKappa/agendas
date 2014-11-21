@@ -8,7 +8,7 @@
 			<input class="form-control col-md-5 col-xs-5" type="text" placeholder="Member" value="" name="member_name">
 			<div class="input-group-addon">
 				<button type="submit" class="no-btn">
-					<i class="glyphicon glyphicon-floppy-disk"></i>
+					<i class="glyphicon glyphicon-plus"></i>
 				</button>
 			</div>
 		</div>
@@ -27,7 +27,7 @@
 						value="<%=Positions[positionID].position_name%>" name="position_name">
 				<input class="form-control" type="text" placeholder="Member"
 						value="<%=Positions[positionID].member_name%>" name="member_name">
-				<input type="text" style="display:none;"
+				<input type="text" style="display:none;" class="form-control order_num_input"
 						value="<%=Positions[positionID].order_num%>" name="order_num">
 				<span class="ctrl-save input-group-addon"><i class="glyphicon glyphicon-floppy-disk"></i></span>
 				<span class="ctrl-delete input-group-addon"><i class="glyphicon glyphicon-remove"></i></span>

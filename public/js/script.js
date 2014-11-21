@@ -15,3 +15,8 @@ $(document).ready(function(){
 		toggle = !toggle;
 	});
 })
+
+window.goManual = function(){
+	alert("maanu");
+	$(".order_num_input").toggle();
+}

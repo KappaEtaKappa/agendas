@@ -7,4 +7,32 @@
 		<link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.css">
 	</head>
 	<body>
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/admin">
+						<img alt="KHK" src="/img/crest.svg" style="height:1em;">
+					</a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="/admin/reports">Reports</a></li>
+						<li><a href="/admin/news">News</a></li>
+						<li><a href="/admin/positions">Position</a></li>
+						<li class="goManual"><a href="#">Ordering:Auto</a></li>
+						<li class="goManual" style="display:none;"><a href="#">Ordering:Manual</a></li>
+						<script>
+						$(document).ready(function(){
+							$(".goManual").click(function(){
+								$(".order_num_input").toggle();
+								$(".goManual").toggle();
+							});
+						});
+						</script>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
 		<div class="container">
