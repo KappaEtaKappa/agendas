@@ -41,7 +41,7 @@ agendas.use(cookieParser());
 
 var ejs = require("ejs");
 
-agendas.listen(8080);
+agendas.listen(80);
 agendas.get('/', function(req, res) {
 	var agendaContent = {};
 	var lock = -4;
@@ -83,7 +83,7 @@ agendas.get('/admin/reports', function(req, res) {
 });
 agendas.post('/report/delete', function(req, res){
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
-	db.run("DELETE FROM reports WHERE report_id="+req.query.report_id);
+	db.run("DELETE FROM reports WHERE report_id="+req.query.report_id, function(err){console.log(err)});
 	res.redirect("/admin/reports");
 });
 agendas.post('/report/update', function(req, res){ 
@@ -100,7 +100,7 @@ agendas.post('/report/add', function(req, res){
 	
 	db.get("SELECT * FROM reports ORDER BY order_num DESC LIMIT 1", function(err, report){
 		db.run("INSERT INTO reports (topic,reporter,order_num)"+
-			"VALUES ('"+req.body.topic+"','"+req.body.reporter+"','"+(report.order_num+1)+"');");
+			"VALUES ('"+req.body.topic+"','"+req.body.reporter+"','"+(report.order_num+1)+"');", function(err){console.log(err)});
 		res.redirect("/admin/reports");
 	})
 });
@@ -115,7 +115,7 @@ agendas.get('/admin/news', function(req, res) {
 agendas.post('/news/delete', function(req, res){
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
 	
-	db.run("DELETE FROM news WHERE news_id="+req.query.news_id);
+	db.run("DELETE FROM news WHERE news_id="+req.query.news_id, function(err){console.log(err)});
 	res.redirect("/admin/news");
 });
 agendas.post('/news/update', function(req, res){
@@ -124,15 +124,17 @@ agendas.post('/news/update', function(req, res){
 	db.run("UPDATE news SET topic='"+req.body.topic+"',"
 		+" old='"+req.body.old+"',"
 		+" order_num='"+req.body.order_num+"'"
-		+" WHERE news_id="+req.query.news_id);
+		+" WHERE news_id="+req.query.news_id, function(err){console.log(err)});
 	res.redirect("/admin/news");
 });
 agendas.post('/news/add', function(req, res){
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
 	
 	db.get("SELECT * FROM news ORDER BY order_num DESC LIMIT 1", function(err, news){
-		db.run("INSERT INTO news (topic,old,order_num)"+
-			"VALUES ('"+req.body.topic+"','"+req.body.old+"','"+(news.order_num+1)+"');");
+		var query = "INSERT INTO news (topic,old,order_num)"+
+                        " VALUES ('"+req.body.topic+"','"+req.body.old+"','"+(news.order_num+1)+"');";
+		console.log(query);
+		db.run(query, function(err){console.log(err)});
 		res.redirect("/admin/news");
 	})
 });
@@ -147,7 +149,7 @@ agendas.get('/admin/positions', function(req, res) {
 agendas.post('/positions/delete', function(req, res){
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
 	
-	db.run("DELETE FROM positions WHERE position_id="+req.query.position_id);
+	db.run("DELETE FROM positions WHERE position_id="+req.query.position_id, function(err){console.log(err)});
 	res.redirect("/admin/positions");
 });
 agendas.post('/positions/update', function(req, res){
@@ -157,7 +159,7 @@ agendas.post('/positions/update', function(req, res){
 		+" assistant='"+req.body.assistant+"',"
 		+" member_name='"+req.body.member_name+"',"
 		+" order_num='"+req.body.order_num+"'"
-		+" WHERE position_id="+req.query.position_id);
+		+" WHERE position_id="+req.query.position_id, function(err){console.log(err)});
 	res.redirect("/admin/positions");
 });
 agendas.post('/positions/add', function(req, res){
@@ -165,7 +167,7 @@ agendas.post('/positions/add', function(req, res){
 	
 	db.get("SELECT * FROM positions ORDER BY order_num DESC LIMIT 1", function(err, positions){
 		db.run("INSERT INTO positions (position_name,assistant,member_name,order_num)"+
-			"VALUES ('"+req.body.position_name+"','"+req.body.assistant+"','"+req.body.member_name+"','"+(positions.order_num+1)+"');");
+			"VALUES ('"+req.body.position_name+"','"+req.body.assistant+"','"+req.body.member_name+"','"+(positions.order_num+1)+"');", function(err){console.log(err)});
 		res.redirect("/admin/positions");
 	});
 });
