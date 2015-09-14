@@ -37,25 +37,27 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("form").on("click", ".ctrl-up", function(){
+				// get the form
 				var form = $(this).closest(".position");
 				var position_id = form.attr("data-position-id");
+				//get the above form
 				var prevForm = form.prev();
 				var prevPosition_id = prevForm.attr("data-position-id");
 				
-
+				//swap the html
 				var html = form.html();
 				form.html(prevForm.html());
 				form.attr("data-position-id", prevPosition_id);
 				prevForm.html(html);
 				prevForm.attr("data-position-id", position_id);
 
-
+				//swap the order numbers
 				var order_num = form.find("input[name='order_num']").val();
 				var prev_order_num = prevForm.find("input[name='order_num']").val();
 				form.find("input[name='order_num']").val(prev_order_num);
 				prevForm.find("input[name='order_num']").val(order_num);
 
-
+				//update the swap in the db
 				$.ajax({
 					url:"/positions/update?position_id="+prevPosition_id,
 					type:"POST",
@@ -68,25 +70,27 @@
 				});
 			});
 			$("form").on("click", ".ctrl-down", function(){
+				//get the form
 				var form = $(this).closest(".position");
 				var position_id = form.attr("data-position-id");
+				//get the below form
 				var nextForm = form.next();
 				var nextPosition_id = nextForm.attr("data-position-id");
 				
-
+				//swap the html
 				var html = form.html();
 				form.html(nextForm.html());
 				form.attr("data-position-id", nextPosition_id);
 				nextForm.html(html);
 				nextForm.attr("data-position-id", position_id);
 
-
+				//swap the order numbers
 				var order_num = form.find("input[name='order_num']").val();
 				var next_order_num = nextForm.find("input[name='order_num']").val();
 				form.find("input[name='order_num']").val(next_order_num);
 				nextForm.find("input[name='order_num']").val(order_num);
 
-
+				//update the change in the db
 				$.ajax({
 					url:"/positions/update?position_id="+nextPosition_id,
 					type:"POST",
@@ -99,6 +103,7 @@
 				});
 			});
 			$("form").on("click", ".ctrl-save", function(){
+				// save the change
 				var form = $(this).closest(".position");
 				var position_id = form.attr("data-position-id");
 				$.ajax({
@@ -108,12 +113,14 @@
 				});
 			});
 			$("form").on("click", ".ctrl-delete", function(){
+				//delete the item 
 				var form = $(this).closest(".position");
 				var position_id = form.attr("data-position-id");
 				$.ajax({
 					url:"/positions/delete?position_id="+position_id,
 					type:"POST"
 				});
+				// remove element
 				form.remove();
 			});
 		});

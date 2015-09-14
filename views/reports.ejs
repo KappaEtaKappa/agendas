@@ -29,26 +29,29 @@
 	<% }); %>
 	<script type="text/javascript">
 		$(document).ready(function(){
+			//move up in order
 			$("form").on("click", ".ctrl-up", function(){
+				//ge parent form 
 				var form = $(this).closest(".entry");
 				var entry_id = form.attr("data-id");
+				//get the form above
 				var prevForm = form.prev();
 				var preventry_id = prevForm.attr("data-id");
 				
-
+				//swap the html and parent element data-ids'
 				var html = form.html();
 				form.html(prevForm.html());
 				form.attr("data-id", preventry_id);
 				prevForm.html(html);
 				prevForm.attr("data-id", entry_id);
 
-
+				//swap the order numbers
 				var order_num = form.find("input[name='order_num']").val();
 				var prev_order_num = prevForm.find("input[name='order_num']").val();
 				form.find("input[name='order_num']").val(prev_order_num);
 				prevForm.find("input[name='order_num']").val(order_num);
 
-
+				//post the change to the db
 				$.ajax({
 					url:"/report/update?report_id="+preventry_id,
 					type:"POST",
@@ -60,26 +63,29 @@
 					data:prevForm.serialize()
 				});
 			});
+			//move down in order
 			$("form").on("click", ".ctrl-down", function(){
+				//get the form
 				var form = $(this).closest(".entry");
 				var entry_id = form.attr("data-id");
+				//get the form below
 				var nextForm = form.next();
 				var nextentry_id = nextForm.attr("data-id");
 				
-
+				//swap the html and parent ids
 				var html = form.html();
 				form.html(nextForm.html());
 				form.attr("data-id", nextentry_id);
 				nextForm.html(html);
 				nextForm.attr("data-id", entry_id);
 
-
+				//swap the order numbers
 				var order_num = form.find("input[name='order_num']").val();
 				var next_order_num = nextForm.find("input[name='order_num']").val();
 				form.find("input[name='order_num']").val(next_order_num);
 				nextForm.find("input[name='order_num']").val(order_num);
 
-
+				//post the change to the db
 				$.ajax({
 					url:"/report/update?report_id="+nextentry_id,
 					type:"POST",
@@ -92,6 +98,7 @@
 				});
 			});
 			$("form").on("click", ".ctrl-save", function(){
+				//post the save to the db
 				var form = $(this).closest(".entry");
 				var entry_id = form.attr("data-id");
 				$.ajax({
@@ -101,12 +108,14 @@
 				});
 			});
 			$("form").on("click", ".ctrl-delete", function(){
+				// post the delete to the db
 				var form = $(this).closest(".entry");
 				var entry_id = form.attr("data-id");
 				$.ajax({
 					url:"/report/delete?report_id="+entry_id,
 					type:"POST"
 				});
+				//delete the form element
 				form.remove();
 			});
 		});

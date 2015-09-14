@@ -29,7 +29,7 @@ if (!exists) {
 	});
  }
 
-var utils = require('utils');
+var utils = require('./modules/utils');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser')
 
@@ -41,11 +41,15 @@ agendas.use(cookieParser());
 
 var ejs = require("ejs");
 
-agendas.listen(80);
+agendas.listen(4000);
+
+//main page, gets data, sends page
 agendas.get('/', function(req, res) {
 	var agendaContent = {};
 	var lock = -4;
 
+	//this is a quick-lock set to only return once 
+	//all util calls have succeeded or failed
 	var lockReturn = function(member, array){
 		agendaContent[member] = array;
 		lock++;
@@ -62,12 +66,17 @@ agendas.get('/', function(req, res) {
 	utils.getHistory(lockReturn);
 	utils.getPositions(lockReturn);
 });
+/////////////////////////////////////////////
+////////////     ADMIN       ////////////////
+/////////////////////////////////////////////
+//access to the admin pannel
 agendas.get('/admin', function(req, res) {
 	if(req.cookies.logged_in == "true"){
 		res.redirect("/admin/reports");
 	}else
 		res.render('admin');
 });
+//form login POST handle
 agendas.post('/login', function(req, res) {
 	if(req.body.password == "asdf"){
 		res.cookie("logged_in", "true");
@@ -75,32 +84,16 @@ agendas.post('/login', function(req, res) {
 	}else
 		res.redirect("/admin");
 });
+
+////////////     reports       //////////////
+//PAGE: edit reports
 agendas.get('/admin/reports', function(req, res) {
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
 	utils.getReports(function(member, array){
 		res.render('reports', {"Reports":array});
 	});
 });
-agendas.post('/report/delete', function(req, res){
-	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
-	db.run("DELETE FROM reports WHERE report_id="+req.query.report_id, function(err){
-		if(err)console.log(err)
-		global.reports_valid = false;
-		res.redirect("/admin/reports");
-	});
-});
-agendas.post('/report/update', function(req, res){ 
-	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
-
-	db.run("UPDATE reports SET reporter='"+req.body.reporter+"',"
-		+" topic='"+req.body.topic+"',"
-		+" order_num='"+req.body.order_num+"'"
-		+" WHERE report_id="+req.query.report_id+";", function(err){
-		if(err)console.log(err)
-		global.reports_valid = false;
-		res.redirect("/admin/reports");
-	});
-});
+//AJAX: create a report
 agendas.post('/report/add', function(req, res){
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
 	
@@ -114,35 +107,38 @@ agendas.post('/report/add', function(req, res){
 			});
 	})
 });
+//AJAX update a report
+agendas.post('/report/update', function(req, res){ 
+	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
 
+	db.run("UPDATE reports SET reporter='"+req.body.reporter+"',"
+		+" topic='"+req.body.topic+"',"
+		+" order_num='"+req.body.order_num+"'"
+		+" WHERE report_id="+req.query.report_id+";", function(err){
+		if(err)console.log(err)
+		global.reports_valid = false;
+		res.redirect("/admin/reports");
+	});
+});
+//AJAX: delete a report
+agendas.post('/report/delete', function(req, res){
+	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
+	db.run("DELETE FROM reports WHERE report_id="+req.query.report_id, function(err){
+		if(err)console.log(err)
+		global.reports_valid = false;
+		res.redirect("/admin/reports");
+	});
+});
+
+////////////       news         //////////////
+//PAGE: edit news
 agendas.get('/admin/news', function(req, res) {
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
-	
 	utils.getNews(function(member, array){
 		res.render('news', {"News":array});
 	});
 });
-agendas.post('/news/delete', function(req, res){
-	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
-	
-	db.run("DELETE FROM news WHERE news_id="+req.query.news_id, function(err){
-		if(err) console.log(err);
-		global.news_valid = false;
-		res.redirect("/admin/news");
-	});
-});
-agendas.post('/news/update', function(req, res){
-	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
-	
-	db.run("UPDATE news SET topic='"+req.body.topic+"',"
-		+" old='"+req.body.old+"',"
-		+" order_num='"+req.body.order_num+"'"
-		+" WHERE news_id="+req.query.news_id, function(err){
-			if(err) console.log(err);
-			global.news_valid = false;
-			res.redirect("/admin/news");
-		});
-});
+//AJAX: create a news topic
 agendas.post('/news/add', function(req, res){
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
 	
@@ -155,7 +151,33 @@ agendas.post('/news/add', function(req, res){
 		});
 	})
 });
+//AJAX: update a news topic
+agendas.post('/news/update', function(req, res){
+	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
+	
+	db.run("UPDATE news SET topic='"+req.body.topic+"',"
+		+" old='"+req.body.old+"',"
+		+" order_num='"+req.body.order_num+"'"
+		+" WHERE news_id="+req.query.news_id, function(err){
+			if(err) console.log(err);
+			global.news_valid = false;
+			res.redirect("/admin/news");
+		});
+});
+//AJAX: delete a news topic
+agendas.post('/news/delete', function(req, res){
+	console.log("wtf");
+	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
+	
+	db.run("DELETE FROM news WHERE news_id="+req.query.news_id, function(err){
+		if(err) console.log(err);
+		global.news_valid = false;
+		res.redirect("/admin/news");
+	});
+});
 
+////////////     positions     //////////////
+//PAGE: edit positions
 agendas.get('/admin/positions', function(req, res) {
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
 	
@@ -165,15 +187,20 @@ agendas.get('/admin/positions', function(req, res) {
 		res.render('people', {"Positions":_positions});
 	});
 });
-agendas.post('/positions/delete', function(req, res){
+//AJAX: add a position
+agendas.post('/positions/add', function(req, res){
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
 	
-	db.run("DELETE FROM positions WHERE position_id="+req.query.position_id, function(err){
-		if(err) console.log(err);
-		global.positions_valid = false;
-		res.redirect("/admin/positions");
+	db.get("SELECT * FROM positions ORDER BY order_num DESC LIMIT 1", function(err, positions){
+		db.run("INSERT INTO positions (position_name,assistant,member_name,order_num)"+
+			"VALUES ('"+req.body.position_name+"','"+req.body.assistant+"','"+req.body.member_name+"','"+(positions.order_num+1)+"');", function(err){
+			if(err) console.log(err);
+			global.positions_valid = false;
+			res.redirect("/admin/positions");
+		});
 	});
 });
+//AJAX: update a position
 agendas.post('/positions/update', function(req, res){
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
 	
@@ -187,19 +214,18 @@ agendas.post('/positions/update', function(req, res){
 			res.redirect("/admin/positions");
 		});
 });
-agendas.post('/positions/add', function(req, res){
+//AJAX: delete a position
+agendas.post('/positions/delete', function(req, res){
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
 	
-	db.get("SELECT * FROM positions ORDER BY order_num DESC LIMIT 1", function(err, positions){
-		db.run("INSERT INTO positions (position_name,assistant,member_name,order_num)"+
-			"VALUES ('"+req.body.position_name+"','"+req.body.assistant+"','"+req.body.member_name+"','"+(positions.order_num+1)+"');", function(err){
-			if(err) console.log(err);
-			global.positions_valid = false;
-			res.redirect("/admin/positions");
-		});
+	db.run("DELETE FROM positions WHERE position_id="+req.query.position_id, function(err){
+		if(err) console.log(err);
+		global.positions_valid = false;
+		res.redirect("/admin/positions");
 	});
 });
 
+//function used to save today's agenda as a complete HTML file.
 var save = function(err, report){
 	var date = new Date();
 	var filename = date.getFullYear() +"_"+ (date.getMonth()+1) +"_"+ (date.getDate()) + ".html"

@@ -39,6 +39,7 @@ h2{
 	color:#eee;
 	background-color: #6a4388;
 	background-image:url(/img/back.gif);
+    padding-top: 30px;
 }
 .line{
   height: 2px;
@@ -123,6 +124,7 @@ h2{
 	height: 100%;
 }
 #header h3{
+	cursor:pointer;
 	line-height:10px;
 	color:white;
 	width: 100%;
@@ -143,3 +145,5 @@ h2{
 	border:0px;
 	color: #555;
 }
+
+

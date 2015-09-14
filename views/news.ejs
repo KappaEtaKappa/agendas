@@ -34,25 +34,27 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("form").on("click", ".ctrl-up", function(){
+				//get the form 
 				var form = $(this).closest(".entry");
 				var entry_id = form.attr("data-id");
+				//get the next form
 				var prevForm = form.prev();
 				var preventry_id = prevForm.attr("data-id");
 				
-
+				//swap the form
 				var html = form.html();
 				form.html(prevForm.html());
 				form.attr("data-id", preventry_id);
 				prevForm.html(html);
 				prevForm.attr("data-id", entry_id);
 
-
+				//swap the order numbers
 				var order_num = form.find("input[name='order_num']").val();
 				var prev_order_num = prevForm.find("input[name='order_num']").val();
 				form.find("input[name='order_num']").val(prev_order_num);
 				prevForm.find("input[name='order_num']").val(order_num);
 
-
+				//post the change to the db
 				$.ajax({
 					url:"/news/update?news_id="+preventry_id,
 					type:"POST",
@@ -65,25 +67,27 @@
 				});
 			});
 			$("form").on("click", ".ctrl-down", function(){
+				// get the form
 				var form = $(this).closest(".entry");
 				var entry_id = form.attr("data-id");
+				//get the below form
 				var nextForm = form.next();
 				var nextentry_id = nextForm.attr("data-id");
 				
-
+				//swap the forms
 				var html = form.html();
 				form.html(nextForm.html());
 				form.attr("data-id", nextentry_id);
 				nextForm.html(html);
 				nextForm.attr("data-id", entry_id);
 
-
+				//swap the order numbers
 				var order_num = form.find("input[name='order_num']").val();
 				var next_order_num = nextForm.find("input[name='order_num']").val();
 				form.find("input[name='order_num']").val(next_order_num);
 				nextForm.find("input[name='order_num']").val(order_num);
 
-
+				//post the change to the db
 				$.ajax({
 					url:"/news/update?news_id="+nextentry_id,
 					type:"POST",
@@ -96,6 +100,7 @@
 				});
 			});
 			$("form").on("click", ".ctrl-save", function(){
+				// save the entry
 				var form = $(this).closest(".entry");
 				var entry_id = form.attr("data-id");
 				$.ajax({
@@ -105,12 +110,14 @@
 				});
 			});
 			$("form").on("click", ".ctrl-delete", function(){
+				// delete the entry
 				var form = $(this).closest(".entry");
 				var entry_id = form.attr("data-id");
 				$.ajax({
 					url:"/news/delete?news_id="+entry_id,
 					type:"POST"
 				});
+				// remove element
 				form.remove();
 			});
 		});

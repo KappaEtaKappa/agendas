@@ -1,17 +1,9 @@
 <% include part_agenda_head %>
-<style>	
-	.snap-drawer-left{
-		background-image:url(/img/back.gif)!important;
-        padding-top: 30px;
-	}
-
-
-</style>
 <div id="header">
     <div id="open-button">
         <img src="/img/crest.png">
     </div>
-    <h3><%= date %></h3>
+    <h3 id="open-history" ><%= date %></h3>
 </div>
 <div class="snap-drawers">
     <div class="snap-drawer snap-drawer-left">
@@ -65,6 +57,37 @@
                         <% include part_topic %>
                     <% } %>
                 <% }) %>
+        </div>
+    </div>
+    <div id="navigation" class="col-xs-12 col-md-12" 
+         style="text-align:center;
+                color:purple;
+                margin-top:15px;
+                margin-bottom:15px;">
+        <div id="navigation-last" class="col-xs-6 col-md-3">
+            <h3>
+                <a href="<%= History[1].href %>">&lt;-Last</a>
+            </h3>
+        </div>
+        <div id="navigation-next" class="col-xs-6 visible-sm visible-xs">
+            <h3>
+                <a href="<%= History[0].href %>">Next-&gt;</a>
+            <h3>
+        </div>
+        <div id="navigation-wiki" class="col-xs-6 col-md-3">
+            <h3>
+                <a href="http://delta.khk.org/wiki">Wiki</a>
+            </h3>
+        </div>
+        <div id="navigation-last" class="col-xs-6 col-md-3">
+            <h3>
+                <a href="/">Current</a>
+            </h3>
+        </div>
+        <div id="navigation-next" class="hidden-sm hidden-xs col-md-3">
+            <h3>
+                <a href="<%= History[0].href %>">Next-&gt;</a>
+            </h3>
         </div>
     </div>
     <div class="footer col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6 col-sm-12 col-xs-12">
