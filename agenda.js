@@ -1,3 +1,5 @@
+process.chdir(__dirname);
+
 var express = require('express');
 var fs = require('fs');
 
@@ -41,7 +43,7 @@ agendas.use(cookieParser());
 
 var ejs = require("ejs");
 
-agendas.listen(4000);
+agendas.listen(80);
 
 //main page, gets data, sends page
 agendas.get('/', function(req, res) {
@@ -78,7 +80,7 @@ agendas.get('/admin', function(req, res) {
 });
 //form login POST handle
 agendas.post('/login', function(req, res) {
-	if(req.body.password == "asdf"){
+	if(req.body.password == "khkef114"){
 		res.cookie("logged_in", "true");
 		res.redirect("/admin/reports");
 	}else
