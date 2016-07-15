@@ -43,7 +43,7 @@ agendas.use(cookieParser());
 
 var ejs = require("ejs");
 
-agendas.listen(80);
+agendas.listen(3000);
 
 //main page, gets data, sends page
 agendas.get('/', function(req, res) {
