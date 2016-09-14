@@ -3,33 +3,7 @@ process.chdir(__dirname);
 var express = require('express');
 var fs = require('fs');
 
-var sqlite3 = require("sqlite3").verbose();
-var file = __dirname + "/db.sqlite";
-global.path = require('path');
-var exists = fs.existsSync(file);
-if (!exists) {
-	console.log("Creating DB file.");
-	fs.openSync(file, "w");
-}
-global.db = new sqlite3.Database(file);
-if (!exists) {
-	console.log("creating new db");
-	db.serialize(function () {
-		db.run("CREATE TABLE 'reports'	(report_id INTEGER PRIMARY KEY, "+
-										"reporter BLOB NOT NULL, "+
-										"order_num INTEGER NOT NULL, "+
-										"topic BLOB NOT NULL);", function(err){console.log(err)});
-		db.run("CREATE TABLE 'news'	(news_id INTEGER PRIMARY KEY, "+
-									"topic BLOB NOT NULL, "+
-									"order_num INTEGER NOT NULL, "+
-									"old VARCHAR(3) NOT NULL);", function(err){console.log(err)});
-		db.run("CREATE TABLE 'positions' (position_id INTEGER PRIMARY KEY, "+
-										 "position_name BLOB NOT NULL, "+
-										 "member_name BLOB NOT NULL, "+
-										 "order_num INTEGER NOT NULL, "+
-										 "assistant VARCHAR(3) NOT NULL);", function(err){console.log(err)});
-	});
- }
+var db = require('./modules/admin');
 
 var utils = require('./modules/utils');
 var bodyParser = require('body-parser');
@@ -91,7 +65,7 @@ agendas.post('/login', function(req, res) {
 //PAGE: edit reports
 agendas.get('/admin/reports', function(req, res) {
 	if(req.cookies.logged_in != "true"){res.redirect("/admin"); return;}
-	utils.getReports(function(member, array){
+	db.reports.all(function(error, array){
 		res.render('reports', {"Reports":array});
 	});
 });
