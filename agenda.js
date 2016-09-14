@@ -54,7 +54,7 @@ agendas.get('/admin', function(req, res) {
 });
 //form login POST handle
 agendas.post('/login', function(req, res) {
-	if(req.body.password == "khkef114"){
+	if(req.body.password == "asdf"){
 		res.cookie("logged_in", "true");
 		res.redirect("/admin/reports");
 	}else
