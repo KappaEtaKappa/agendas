@@ -1,7 +1,7 @@
 server {
         listen 80;
         
-        server_name agendas.do.khk.org;
+        server_name agendas.delta.khk.org;
 
         location / {
 		proxy_set_header Host $host;
